@@ -1,0 +1,30 @@
+@(countries: List[Country])
+
+<h1>Welcome </h1>
+
+<table border="1">
+    <thead>
+        <th>Name</th>
+        <th>Code</th>
+        <th>Continent</th>
+        <th>Wikipiedia Link</th>
+        <th>keywords</th>
+        <th>airports</th>
+    </thead>
+    <tbody>
+        @for(country <- countries) {
+            <tr>
+                <td>@country.getName()</td>
+                <td>@country.getCode()</td>
+                <td>@country.getContinent()</td>
+                <td>@country.getWikipedia_link()</td>
+                <td>@country.getKeywords()</td>
+            @for(airport <- country.getAirports()) {
+                <tr>
+                    <td>@airport.getName()</td>
+                </tr>
+            }
+            </tr>
+        }
+    </tbody>
+</table>
