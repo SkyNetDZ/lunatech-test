@@ -1,6 +1,5 @@
 package controllers;
 
-import io.ebean.Ebean;
 import models.Country;
 import play.*;
 import play.data.Form;
@@ -16,17 +15,28 @@ public class Application extends Controller {
 
     private List<Country> countries;
     Form<Country> countryForm ;
+    private FormFactory formFactory;
 
 
-//    @Inject
-//    public Application() {
-//        this.countries = Ebean.find(Country.class).fetch("airports").where().eq("code","US").findList();
-//    }
+    @Inject
+    public Application(final FormFactory formFactory) {
 
-
+        this.formFactory = formFactory;
+    }
 
     public Result index() {
-        return ok(index.render(countryForm));
+        return ok(index.apply());
     }
+
+//    public Result postForm() {
+//        this.countryForm = formFactory.form(Country.class).bindFromRequest();
+//        if (countryForm.hasErrors()) {
+//            return badRequest(views.html.country.render(countryForm.get()));
+//        } else {
+//            Country country = countryForm.get();
+//            flash("success", "Country saved!");
+//            return ok(views.html.country.render(country));
+//        }
+//    }
 
 }

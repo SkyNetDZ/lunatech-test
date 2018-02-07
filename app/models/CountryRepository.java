@@ -1,10 +1,10 @@
 package models;
 
+import com.mongodb.AggregationOptions;
 import com.mongodb.MongoClient;
-import org.bson.types.ObjectId;
+import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.aggregation.Group;
-import org.mongodb.morphia.query.QueryImpl;
 
 import javax.inject.Inject;
 import java.util.Iterator;
@@ -14,6 +14,10 @@ public class CountryRepository {
 
     @Inject
     private Morphia morphia;
+
+    public List<Country> countryList(){
+        return morphia.createDatastore(new MongoClient(), "lunadb").createQuery(Country.class).asList();
+    }
 
     public Country findById(int id) {
         Country country = morphia.createDatastore(new MongoClient(), "lunadb").createQuery(Country.class).
@@ -28,13 +32,11 @@ public class CountryRepository {
     }
 
     public Iterator<Airport> getAirports() {
-        return morphia.createDatastore(new MongoClient(), "lunadb").createAggregation(Country.class)
-                .lookup("countries", "iso_country", "code", "airport_docs")
-                .out(Airport.class);
-
+        AggregationOptions options = AggregationOptions.builder().outputMode(AggregationOptions.OutputMode.CURSOR).build();
+        return morphia.createDatastore(new MongoClient(), "lunadb")
+                .createAggregation(Airport.class)
+                .group("iso_country", Group.grouping("airports", Group.push("name")))
+                .out(Airport.class, options);
     }
 
-    public void save(Country u) {
-        morphia.createDatastore(new MongoClient(), "lunadb").save(u);
-    }
 }

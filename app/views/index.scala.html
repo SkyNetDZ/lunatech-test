@@ -26,12 +26,16 @@
 @*}*@
 @*</tbody>*@
 @*</table>*@
-@(countryForm: Form[models.Country])
-@if(flash.get("success") != null) {
-    <p>@flash.get("success")</p>
-}
 
-@helper.form(action = routes.CountryController.postForm()) {
-    @helper.inputText(countryForm("name"))
-    <input type="submit">
-}
+<h1> LunaTech Home Page Test</h1>
+    <ul>
+        <li>
+            <a href="/request">Request</a>
+        </li>
+        <li>
+            <a href="/query">Query</a>
+        </li>
+        <li>
+
+        </li>
+    </ul>
