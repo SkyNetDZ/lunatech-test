@@ -1,10 +1,13 @@
 package models;
 
+import com.google.common.collect.Lists;
 import com.mongodb.AggregationOptions;
 import com.mongodb.MongoClient;
-import org.mongodb.morphia.Datastore;
+
 import org.mongodb.morphia.Morphia;
 import org.mongodb.morphia.aggregation.Group;
+import org.mongodb.morphia.internal.MorphiaUtils;
+import org.mongodb.morphia.query.Query;
 
 import javax.inject.Inject;
 import java.util.Iterator;
@@ -14,6 +17,7 @@ public class CountryRepository {
 
     @Inject
     private Morphia morphia;
+
 
     public List<Country> countryList(){
         return morphia.createDatastore(new MongoClient(), "lunadb").createQuery(Country.class).asList();
@@ -31,12 +35,20 @@ public class CountryRepository {
         return country;
     }
 
-    public Iterator<Airport> getAirports() {
+    private Iterator<Country> groupAirports() {
         AggregationOptions options = AggregationOptions.builder().outputMode(AggregationOptions.OutputMode.CURSOR).build();
+        Query<Country> query = morphia.createDatastore(new MongoClient(), "lunadb").createQuery(Country.class);
         return morphia.createDatastore(new MongoClient(), "lunadb")
-                .createAggregation(Airport.class)
-                .group("iso_country", Group.grouping("airports", Group.push("name")))
-                .out(Airport.class, options);
+                .createAggregation(Country.class)
+                //.match(query.filter("name =" , countryName))
+                .lookup("airports" , "code", "iso_country", "airports")
+                //.group(Group.id(Group.grouping("iso_country")), Group.grouping("airports", Group.push("name")))
+                .out(Country.class, options);
+    }
+
+    public List<Country> listAirpots(){
+        Iterator<Country> it = this.groupAirports();
+        return morphia.createDatastore(new MongoClient(), "lunadb").createQuery(Country.class).asList();
     }
 
 }

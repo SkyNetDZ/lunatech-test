@@ -182,11 +182,14 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.util.List;
+
 @Entity(value = "airports")
 public class Airport {
 
+
     @Id
-    private ObjectId _id;
+    private String _id;
     public String ident;
     public String type;
     public String name;
@@ -205,13 +208,14 @@ public class Airport {
     public String keywords;
 
 
-    public ObjectId get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(ObjectId _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
+
 
     public String getIdent() {
         return ident;

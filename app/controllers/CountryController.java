@@ -13,15 +13,17 @@ import java.util.List;
 public class CountryController extends Controller {
 
    private List<Country> countries;
-   private List<Airport> airports;
+   private List<Country> airports;
    private CountryRepository countryRepository;
 
 
     @Inject
     public CountryController(CountryRepository countryRepository) {
-        this.countryRepository = countryRepository;
-    }
 
+        this.countryRepository = countryRepository;
+        List<Country> it = this.countryRepository.listAirpots();
+
+    }
 
     public Result list(){
         this.countries = this.countryRepository.countryList();
@@ -29,13 +31,9 @@ public class CountryController extends Controller {
     }
 
     public Result listAirports(){
-        Iterator<Airport> it = this.countryRepository.getAirports();
-//        while(it.hasNext()) {
-//            System.out.println(it.next().getName());
-//        }
+        List<Country> it = this.countryRepository.listAirpots();
         this.airports = Lists.newArrayList(it);
         return ok(Json.toJson(this.airports));
     }
-
 
 }

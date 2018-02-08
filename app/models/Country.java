@@ -90,6 +90,8 @@ import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
+import java.util.List;
+
 @Entity(value = "countries")
 public class Country {
 
@@ -100,6 +102,7 @@ public class Country {
     public String code;
     public String continent;
     public String wikipedia_link;
+    public List<Airport> airports;
 
     public ObjectId get_id() {
         return _id;
@@ -147,5 +150,13 @@ public class Country {
 
     public void setWikipedia_link(String wikipedia_link) {
         this.wikipedia_link = wikipedia_link;
+    }
+
+    public List<Airport> getAirports() {
+        return airports;
+    }
+
+    public void setAirports(List<Airport> airports) {
+        this.airports = airports;
     }
 }
