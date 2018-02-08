@@ -1,13 +1,11 @@
 package controllers;
 
 import com.google.common.collect.Lists;
-import models.Airport;
 import models.Country;
 import models.CountryRepository;
 import play.libs.Json;
 import play.mvc.*;
 import javax.inject.Inject;
-import java.util.Iterator;
 import java.util.List;
 
 public class CountryController extends Controller {
@@ -21,7 +19,7 @@ public class CountryController extends Controller {
     public CountryController(CountryRepository countryRepository) {
 
         this.countryRepository = countryRepository;
-        List<Country> it = this.countryRepository.listAirpots();
+        //this.countryRepository.listAirports();
 
     }
 
@@ -31,9 +29,18 @@ public class CountryController extends Controller {
     }
 
     public Result listAirports(){
-        List<Country> it = this.countryRepository.listAirpots();
+        List<Country> it = this.countryRepository.listAirports();
         this.airports = Lists.newArrayList(it);
         return ok(Json.toJson(this.airports));
+    }
+
+
+    public Result sortCountriesByAirports(String direction){
+        if(direction.endsWith("asc")){
+            return ok(Json.toJson(this.countryRepository.listLowestNbrAirports()));
+        }else {
+            return ok(Json.toJson(this.countryRepository.listHighestNbrAirports()));
+        }
     }
 
 }

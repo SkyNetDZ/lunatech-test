@@ -5,10 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index
 
-
 GET  /request                       controllers.CountryController.listAirports
 
-#GET /request/:name                  controllers.CountryController.findByName
+GET  /query/:direction              controllers.CountryController.sortCountriesByAirports(direction)
 
 
 # Map static resources from the /public folder to the /assets URL path
