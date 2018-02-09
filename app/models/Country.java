@@ -92,7 +92,7 @@ import org.mongodb.morphia.annotations.Id;
 
 import java.util.List;
 
-@Entity(value = "countries")
+@Entity(value = "countries" , noClassnameStored = true)
 public class Country {
 
     @Id

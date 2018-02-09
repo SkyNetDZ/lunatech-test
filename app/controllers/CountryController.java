@@ -17,10 +17,7 @@ public class CountryController extends Controller {
 
     @Inject
     public CountryController(CountryRepository countryRepository) {
-
         this.countryRepository = countryRepository;
-        //this.countryRepository.listAirports();
-
     }
 
     public Result list(){
@@ -29,8 +26,7 @@ public class CountryController extends Controller {
     }
 
     public Result listAirports(){
-        List<Country> it = this.countryRepository.listAirports();
-        this.airports = Lists.newArrayList(it);
+        this.airports = this.countryRepository.listAirports();
         return ok(Json.toJson(this.airports));
     }
 
